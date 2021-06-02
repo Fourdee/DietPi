@@ -5020,7 +5020,7 @@ Package: wireguard wireguard-dkms wireguard-tools\nPin: release n=bullseye\nPin-
 				# Odroid XU4
 				elif (( $G_HW_MODEL == 11 )); then
 
-					apackages=('linux-image-4.14-armhf-odroid-xu4' 'linux-headers-4.14-armhf-odroid-xu4')
+					apackages=('linux-image-5.4-armhf-odroid-xu4' 'linux-headers-5.4-armhf-odroid-xu4')
 
 				# Odroid C2
 				elif (( $G_HW_MODEL == 12 )); then
@@ -5030,7 +5030,7 @@ Package: wireguard wireguard-dkms wireguard-tools\nPin: release n=bullseye\nPin-
 				# Odroid N1
 				elif (( $G_HW_MODEL == 14 )); then
 
-					apackages=('linux-image-arm64-odroid-n1' 'linux-headers-arm64-odroid-n1')
+					apackages=('linux-image-5.10-arm64-odroid-n1' 'linux-headers-5.10-arm64-odroid-n1')
 
 				# Odroid N2
 				elif (( $G_HW_MODEL == 15 )); then

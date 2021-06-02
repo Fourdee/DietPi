@@ -872,7 +872,7 @@ _EOF_
 		#	Odroid N1
 		elif (( $G_HW_MODEL == 14 )); then
 
-			G_AGI linux-image-arm64-odroid-n1 meveric-keyring
+			G_AGI linux-image-5.10-arm64-odroid-n1 meveric-keyring
 
 			# Remove obsolete combined keyring
 			[[ -f '/etc/apt/trusted.gpg' ]] && G_EXEC rm /etc/apt/trusted.gpg
@@ -890,7 +890,7 @@ _EOF_
 		#	Odroid XU3/XU4/MC1/HC1/HC2
 		elif (( $G_HW_MODEL == 11 )); then
 
-			G_AGI linux-image-4.14-armhf-odroid-xu4 meveric-keyring
+			G_AGI linux-image-5.4-armhf-odroid-xu4 meveric-keyring
 
 			# Remove obsolete combined keyring
 			[[ -f '/etc/apt/trusted.gpg' ]] && G_EXEC rm /etc/apt/trusted.gpg
