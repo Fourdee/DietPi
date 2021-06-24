@@ -1508,6 +1508,8 @@ INDEX_BROWSER_TARGET=$INDEX_BROWSER_TARGET"
 		done
 		# - Odroid U3
 		aSOFTWARE_AVAIL_G_HW_MODEL[$software_id,13]=0
+		# + ROCK Pi S
+		aSOFTWARE_AVAIL_G_HW_MODEL[$software_id,73]=1
 		# Re-enable if module is shipped with (kernel) package
 		shopt -s globstar
 		for i in /lib/modules/*/kernel/**/wireguard.ko
@@ -5518,6 +5520,11 @@ Package: wireguard wireguard-dkms wireguard-tools\nPin: release n=bullseye\nPin-
 
 					apackages=('linux-image-arm64-odroid-c4' 'linux-headers-arm64-odroid-c4')
 
+				# ROCK Pi S
+				elif (( $G_HW_MODEL == 73 )); then
+
+					apackages=('linux-4.4-rock-pi-s-latest' 'python-minimal') # Python 2 required for kernel builds
+
 				fi
 
 				# Odroids need to purge before we install, else, does not update to latest version...
@@ -5526,6 +5533,20 @@ Package: wireguard wireguard-dkms wireguard-tools\nPin: release n=bullseye\nPin-
 				# Since G_AGUG does not upgrade packages with changed dependencies, in case of kernel image meta packages, those need to be installed+upgraded via G_AGI.
 				G_AGI "${apackages[@]}" # apt-get install overrides hold state
 				unset -v apackages
+
+				# ROCK Pi S: Reinstall header package if files are missing. We ship our image with header package installed (dependency) but files removed :(.
+				if [[ $G_HW_MODEL == 73 ]]
+				then
+					local headers=0
+					for i in /usr/src/linux-headers-4.4.*
+					do
+						[[ -d $i ]] && headers=1 && break
+					done
+					(( $headers )) || for i in $(dpkg-query -Wf '${Depends}' linux-4.4-rock-pi-s-latest)
+					do
+						[[ $i == 'linux-headers-4.4.'* ]] && G_AGI --reinstall "$i" && break
+					done
+				fi	
 
 				# Workaround for missing /lib/modules/<version>/build symlink: https://github.com/MichaIng/DietPi/issues/3577
 				# - Known as issue currently on Odroid C2/N1/N2, check for new build system if linux-<version>/ holds current headers instead of linux-source-<version>/: https://dietpi.com/meveric/pool/c2/l/
